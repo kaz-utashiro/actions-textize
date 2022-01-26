@@ -7,9 +7,9 @@ runs:
   using: composite
   steps:
 
-    - uses: office-tecoli/actions-use-any-tools@main
+    - uses: office-tecoli/actions-use-perl-tools@main
       with:
-        perl: App::optex::textconv
+        tools: App::optex::textconv
 
     - id: make-txt
       shell: bash
