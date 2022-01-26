@@ -1,0 +1,28 @@
+name: textize documents
+
+inputs:
+  root: { required: false, type: string }
+
+runs:
+  using: composite
+  steps:
+
+    - uses: office-tecoli/actions-use-any-tools@main
+      with:
+        perl: App::optex::textconv
+
+    - id: make-txt
+      shell: bash
+      run: |
+        root=${{ inputs.root }}
+        : ${root:=.}
+        for file in $(find $root -name '*.docx' -print)
+        do
+            txt=${file%.*}.txt
+            if [ -f $txt ]
+            then
+                echo $txt exists
+            else
+                optex -Mtextconv cat $file > ${file%.*}.txt
+            fi
+        done

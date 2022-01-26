@@ -1,0 +1,25 @@
+name: test
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        id: action
+        with:
+          root: __test__
+      - run: |
+          ls -lR
+          for txt in $(find . -name '*.txt' -print)
+          do
+            echo $txt:
+            cat -n $txt
+          done
