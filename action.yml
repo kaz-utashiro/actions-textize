@@ -1,13 +1,14 @@
 name: textize documents
 
 inputs:
-  root: { required: false, type: string }
+  root:   { required: false, type: string }
+  branch: { required: false, type: string, default: textize }
 
 runs:
   using: composite
   steps:
 
-    - uses: office-tecoli/actions-use-perl-tools@main
+    - uses: office-tecoli/actions-use-perl-tools@v0
       with:
         tools: App::optex::textconv
 
@@ -26,3 +27,9 @@ runs:
                 optex -Mtextconv cat $file > ${file%.*}.txt
             fi
         done
+
+    - id: export
+      shell: bash
+      run: |
+        git branch
+        git status
