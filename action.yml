@@ -16,10 +16,13 @@ runs:
     - id: textize
       shell: bash
       run: |
+        : textize
         root=${{ inputs.root }}
         : ${root:=.}
         textize=$GITHUB_ACTION_PATH/textize.sh
-        update=$( $textize $(git ls-files $root) )
+        files=$(git ls-files $root)
+        echo Processing $files ...
+        update=$( $textize $files )
         cat << END
         ::set-output update=$update
         END
@@ -27,6 +30,7 @@ runs:
     - id: export
       shell: bash
       run: |
-        echo ${{ steps.outputs.update }}
+        : export
+        echo ${{ steps.textize.outputs.update }}
         git branch
         git status

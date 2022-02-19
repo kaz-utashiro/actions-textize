@@ -17,9 +17,10 @@ jobs:
         with:
           root: __test__
       - run: |
+          : check result
           ls -lR
           for txt in $(find . -name '*.txt' -print)
           do
             echo $txt:
-            cat -n $txt
+            cat -n $txt | head -20
           done
