@@ -8,9 +8,10 @@ runs:
   using: composite
   steps:
 
-    - uses: office-tecoli/actions-use-perl-tools@v0
+    - uses: office-tecoli/actions-use-any-tools@v0
       with:
-        tools: App::optex::textconv
+        perl: App::optex::textconv
+        apt:  poppler-utils
 
     - id: make-txt
       shell: bash
