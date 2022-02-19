@@ -13,34 +13,20 @@ runs:
         perl: App::optex::textconv
         apt:  poppler-utils
 
-    - id: make-txt
+    - id: textize
       shell: bash
       run: |
         root=${{ inputs.root }}
         : ${root:=.}
-        for file in $(
-            find $root \
-                \( \
-                    -name '*.docx' -o -name '*.docm' -o -name '*.doc' -o \
-                    -name '*.pptx' -o -name '*.pptm' -o \
-                    -name '*.pdf' \
-                \) \
-                -print \
-        )
-        do
-            txt=${file/%.*/.txt}
-            if [ -f $txt ]
-            then
-                echo $txt exists
-            else
-                optex -Mtextconv cat $file > $txt
-                cat -n $txt
-            fi
-        done
+        textize=$GITHUB_ACTION_PATH/textize.sh
+        update=$( $textize $(git ls-files $root) )
+        cat << END
+        ::set-output update=$update
+        END
 
     - id: export
       shell: bash
       run: |
+        echo ${{ steps.outputs.update }}
         git branch
         git status
-

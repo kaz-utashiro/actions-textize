@@ -1,34 +1,26 @@
 #!/bin/bash
 
-set -e
+declare -a txtfiles
 
-target=textize
-repository=../../textize 
-
-[ -d $target/.git ] || git clone $repository $target
-
-cd $target
-
-: ${root:=.}
-
-files=$(git ls-files)
-
-for file in $files
+for file in $*
 do
     [[ "$file" =~ (.*)\.([a-z]+)$ ]] || continue
     base=${BASH_REMATCH[1]}
     suffix=${BASH_REMATCH[2]}
     case "$suffix" in
-	docx)
+	docx|pdf)
 	    txt="${base}_${suffix}.txt" ;;
 	*)
 	    continue ;;
     esac
-    echo $txt
     if [ -f $txt ]
     then
-	echo $txt exists
+	echo update $txt 1>&2
     else
-	optex -Mtextconv cat $file > $txt
+	echo create $txt 1>&2
     fi
+    optex -Mtextconv cat $file > $txt
+    txtfiles+=($txt)
 done
+
+(( ${#txtfiles[@]} > 0 )) && echo ${txtfiles[@]}
