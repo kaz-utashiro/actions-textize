@@ -61,5 +61,5 @@ runs:
         git add .
         if git commit -m "update $update"
         then
-            git push -f $repo
+            git push
         fi
