@@ -44,5 +44,5 @@ runs:
         git config --global user.name "$GITHUB_ACTOR"
         TOKEN="${{ inputs.token }}"
         repo="https://${GITHUB_ACTOR}:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-        git add -u
+        git add .
         git commit -m "update $update" && git push -f $repo
