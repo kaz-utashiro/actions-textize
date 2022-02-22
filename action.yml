@@ -34,8 +34,8 @@ runs:
         ::set-output name=update::$update
         END
         #
-        (cd __textize__; git merge -s ort -X theirs $GITHUB_REF_NAME)
-        tar -cf - $update | tar -C __textize__ -xfv -
+        (cd __textize__; git merge -m 'merge main' -s ort -X theirs $GITHUB_REF_NAME || :)
+        tar -cf - $update | tar -C __textize__ -xvf -
 
     - id: export
       shell: bash
