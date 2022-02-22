@@ -34,8 +34,8 @@ runs:
         ::set-output name=update::$update
         END
         #
-        set -x
-        git branch --all -v -r
+        set -x; exec 2>&1
+        git branch -av
         (cd __textize__; git diff $GITHUB_REF_NAME || :)
         (cd __textize__; git merge -m 'merge main' -s ort -X theirs $GITHUB_REF_NAME || :)
         tar -cf - $update | tar -C __textize__ -xvf -
@@ -44,7 +44,7 @@ runs:
       shell: bash
       run: |
         : export
-        set -x
+        set -x; exec 2>&1
         cd __textize__
         update="${{ steps.textize.outputs.update }}"
         git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com>"
