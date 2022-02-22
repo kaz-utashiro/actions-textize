@@ -34,19 +34,26 @@ runs:
         ::set-output name=update::$update
         END
         #
-        (cd __textize__; git merge -m 'merge main' -s ort -X theirs $GITHUB_REF_NAME || :)
+        set -x; exec 2>&1
+        git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com>"
+        git config --global user.name "$GITHUB_ACTOR"
+        git branch -av
+        (cd __textize__; git fetch origin $GITHUB_REF_NAME :)
+        (cd __textize__; git diff  origin/$GITHUB_REF_NAME || :)
+        (cd __textize__; git merge --allow-unrelated-histories -m "merge origin/$GITHUB_REF_NAME" -s ort -X theirs origin/$GITHUB_REF_NAME || :)
         tar -cf - $update | tar -C __textize__ -xvf -
 
     - id: export
       shell: bash
       run: |
         : export
-        set -x; printenv
+        set -x; exec 2>&1
         cd __textize__
         update="${{ steps.textize.outputs.update }}"
-        git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com>"
-        git config --global user.name "$GITHUB_ACTOR"
         TOKEN="${{ inputs.token }}"
         repo="https://${GITHUB_ACTOR}:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         git add .
-        git commit -m "update $update" && git push -f $repo
+        if git commit -m "update $update"
+        then
+            git push -f $repo
+        fi
