@@ -43,4 +43,4 @@ runs:
         git checkout -B $BRANCH
         git merge -s ort -X theirs $GITHUB_REF_NAME
         git add -u
-        git commit -f -m "update $update" && git push $repo
+        git commit -m "update $update" && git push -f $repo

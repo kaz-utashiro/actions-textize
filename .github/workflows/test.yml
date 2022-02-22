@@ -2,9 +2,6 @@ name: test
 
 on:
   push:
-    branches:
-      - main
-      - master
     branches-ignore:
       - textize
     paths-ignore:
