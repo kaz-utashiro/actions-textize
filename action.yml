@@ -33,5 +33,5 @@ runs:
       run: |
         : export
         echo ${{ steps.textize.outputs.update }}
-        git branch
+        git checkout -b textize
         git status

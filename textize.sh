@@ -25,6 +25,5 @@ done
 
 if (( ${#txtfiles[@]} > 0 ))
 then
-    echo ${txtfiles[@]} 1>&2
     echo ${txtfiles[@]}
 fi
