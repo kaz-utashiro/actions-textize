@@ -30,8 +30,6 @@ runs:
 
     - id: export
       shell: bash
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         : export
         update="${{ steps.textize.outputs.update }}"
