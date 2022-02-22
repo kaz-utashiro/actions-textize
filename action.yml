@@ -20,6 +20,11 @@ runs:
         : textize
         root=${{ inputs.root }}
         : ${root:=.}
+        #
+        # create/checkout target branch and merge main
+        git checkout -B $BRANCH
+        git merge -s ort -X theirs $GITHUB_REF_NAME
+        #
         textize=$GITHUB_ACTION_PATH/textize.sh
         files=$(git ls-files $root)
         echo Processing $files ...
@@ -40,7 +45,5 @@ runs:
         TOKEN="${{ inputs.token }}"
         BRANCH="${{ inputs.branch }}"
         repo="https://${GITHUB_ACTOR}:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-        git checkout -B $BRANCH
-        git merge -s ort -X theirs $GITHUB_REF_NAME
         git add -u
         git commit -m "update $update" && git push -f $repo
