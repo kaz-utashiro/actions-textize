@@ -35,13 +35,11 @@ runs:
         : export
         set -x; printenv
         update="${{ steps.textize.outputs.update }}"
-        git config --global user.email "you@example.com"
-        git config --global user.name "Your Name"
+        git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com>"
+        git config --global user.name "$GITHUB_ACTOR"
         TOKEN="${{ inputs.token }}"
         BRANCH="${{ inputs.branch }}"
-        remote_repo="https://${GITHUB_ACTOR}:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-        echo $remote_repo
+        repo="https://${GITHUB_ACTOR}:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         git checkout -B $BRANCH
         git add $update
-        git commit -m "update $update"
-        git push $remote_repo
+        git commit -m "update $update" && git push $repo
