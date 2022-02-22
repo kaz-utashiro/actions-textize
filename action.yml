@@ -32,12 +32,14 @@ runs:
       shell: bash
       run: |
         : export
+        set -x
         update="${{ steps.textize.outputs.update }}"
         git config --global user.email "you@example.com"
         git config --global user.name "Your Name"
-        git checkout -B textize
+        GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
         remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_ACTION_REPOSITORY}.git"
         echo $remote_repo
+        git checkout -B textize
         git add $update
         git commit -m "update $update"
         git push $remote_repo
