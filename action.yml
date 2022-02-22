@@ -35,6 +35,8 @@ runs:
         END
         #
         set -x; exec 2>&1
+        git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com>"
+        git config --global user.name "$GITHUB_ACTOR"
         git branch -av
         (cd __textize__; git fetch origin $GITHUB_REF_NAME :)
         (cd __textize__; git diff  origin/$GITHUB_REF_NAME || :)
@@ -48,8 +50,6 @@ runs:
         set -x; exec 2>&1
         cd __textize__
         update="${{ steps.textize.outputs.update }}"
-        git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com>"
-        git config --global user.name "$GITHUB_ACTOR"
         TOKEN="${{ inputs.token }}"
         repo="https://${GITHUB_ACTOR}:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         git add .
