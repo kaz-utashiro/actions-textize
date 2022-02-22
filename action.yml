@@ -25,7 +25,7 @@ runs:
         update=$( $textize $files )
         echo $update
         cat << END
-        ::set-output update=$update
+        ::set-output name=update::$update
         END
 
     - id: export
