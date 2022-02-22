@@ -23,6 +23,7 @@ runs:
         files=$(git ls-files $root)
         echo Processing $files ...
         update=$( $textize $files )
+        echo $update
         cat << END
         ::set-output update=$update
         END

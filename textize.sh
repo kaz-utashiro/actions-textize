@@ -23,4 +23,8 @@ do
     txtfiles+=($txt)
 done
 
-(( ${#txtfiles[@]} > 0 )) && echo ${txtfiles[@]}
+if (( ${#txtfiles[@]} > 0 ))
+then
+    echo ${txtfiles[@]} 1>&2
+    echo ${txtfiles[@]}
+fi
