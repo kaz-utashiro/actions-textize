@@ -43,7 +43,7 @@ runs:
       shell: bash
       run: |
         : export
-        set -x; printenv
+        set -x
         cd __textize__
         update="${{ steps.textize.outputs.update }}"
         git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com>"
@@ -51,4 +51,7 @@ runs:
         TOKEN="${{ inputs.token }}"
         repo="https://${GITHUB_ACTOR}:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         git add .
-        git commit -m "update $update" && git push -f $repo
+        if [ git commit -m "update $update" ]
+        then
+            git push -f $repo
+        fi
