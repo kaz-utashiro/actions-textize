@@ -39,7 +39,7 @@ runs:
         git config --global user.name "Your Name"
         TOKEN="${{ inputs.token }}"
         BRANCH="${{ inputs.branch }}"
-        remote_repo="https://${GITHUB_ACTOR}:${TOKEN}@github.com/${GITHUB_ACTION_REPOSITORY}.git"
+        remote_repo="https://${GITHUB_ACTOR}:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         echo $remote_repo
         git checkout -B $BRANCH
         git add $update
