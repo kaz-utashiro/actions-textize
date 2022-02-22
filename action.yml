@@ -41,5 +41,6 @@ runs:
         BRANCH="${{ inputs.branch }}"
         repo="https://${GITHUB_ACTOR}:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         git checkout -B $BRANCH
+        git merge -s ort -X theirs $GITHUB_REF_NAME
         git add $update
         git commit -m "update $update" && git push $repo
