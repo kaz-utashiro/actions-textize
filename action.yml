@@ -22,7 +22,7 @@ runs:
         : ${root:=.}
         #
         # create/checkout target branch and merge main
-        git checkout -B "${{ inputs.branch }}"
+        git checkout -b "${{ inputs.branch }}"
         git merge -s ort -X theirs $GITHUB_REF_NAME
         #
         textize=$GITHUB_ACTION_PATH/textize.sh
