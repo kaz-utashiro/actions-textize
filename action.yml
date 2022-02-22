@@ -1,4 +1,4 @@
-name: textize documents
+ame: textize documents
 
 inputs:
   root:   { required: false, type: string }
@@ -29,7 +29,7 @@ runs:
         files=$(git ls-files $root)
         echo Processing $files ...
         update=$( $textize $files )
-        echo $update
+        echo Update: $update
         cat << END
         ::set-output name=update::$update
         END
@@ -38,9 +38,15 @@ runs:
         git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com>"
         git config --global user.name "$GITHUB_ACTOR"
         git branch -av
-        (cd __textize__; git fetch origin $GITHUB_REF_NAME :)
-        (cd __textize__; git diff  origin/$GITHUB_REF_NAME || :)
-        (cd __textize__; git merge --allow-unrelated-histories -m "merge origin/$GITHUB_REF_NAME" -s ort -X theirs origin/$GITHUB_REF_NAME || :)
+        (
+            cd __textize__
+            git fetch origin $GITHUB_REF_NAME || :
+            git merge \
+                --allow-unrelated-histories \
+                -m "merge origin/$GITHUB_REF_NAME" \
+                -s ort -X theirs \
+                origin/$GITHUB_REF_NAME || : \
+        )
         tar -cf - $update | tar -C __textize__ -xvf -
 
     - id: export
