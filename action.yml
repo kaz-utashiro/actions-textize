@@ -3,6 +3,7 @@ name: textize documents
 inputs:
   root:   { required: false, type: string }
   branch: { required: false, type: string, default: textize }
+  token:  { required: true, default: '${{ github.token }}' }
 
 runs:
   using: composite
@@ -32,14 +33,15 @@ runs:
       shell: bash
       run: |
         : export
-        set -x
+        set -x; printenv
         update="${{ steps.textize.outputs.update }}"
         git config --global user.email "you@example.com"
         git config --global user.name "Your Name"
-        GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-        remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_ACTION_REPOSITORY}.git"
+        TOKEN="${{ inputs.token }}"
+        BRANCH="${{ inputs.branch }}"
+        remote_repo="https://${GITHUB_ACTOR}:${TOKEN}@github.com/${GITHUB_ACTION_REPOSITORY}.git"
         echo $remote_repo
-        git checkout -B textize
+        git checkout -B $BRANCH
         git add $update
         git commit -m "update $update"
         git push $remote_repo
