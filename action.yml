@@ -35,9 +35,9 @@ runs:
         END
         #
         set -x
-        git branch --all
-        (cd __textize__; git diff origin/$GITHUB_REF_NAME || :)
-        (cd __textize__; git merge -m 'merge main' -s ort -X theirs origin/$GITHUB_REF_NAME || :)
+        git branch --all -v -r
+        (cd __textize__; git diff $GITHUB_REF_NAME || :)
+        (cd __textize__; git merge -m 'merge main' -s ort -X theirs $GITHUB_REF_NAME || :)
         tar -cf - $update | tar -C __textize__ -xvf -
 
     - id: export
@@ -52,7 +52,7 @@ runs:
         TOKEN="${{ inputs.token }}"
         repo="https://${GITHUB_ACTOR}:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         git add .
-        if [ git commit -m "update $update" ]
+        if git commit -m "update $update"
         then
             git push -f $repo
         fi
