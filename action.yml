@@ -38,7 +38,7 @@ runs:
         git branch -av
         (cd __textize__; git fetch origin $GITHUB_REF_NAME :)
         (cd __textize__; git diff  origin/$GITHUB_REF_NAME || :)
-        (cd __textize__; git merge -m "merge origin/$GITHUB_REF_NAME" -s ort -X theirs origin/$GITHUB_REF_NAME || :)
+        (cd __textize__; git merge --allow-unrelated-histories -m "merge origin/$GITHUB_REF_NAME" -s ort -X theirs origin/$GITHUB_REF_NAME || :)
         tar -cf - $update | tar -C __textize__ -xvf -
 
     - id: export
