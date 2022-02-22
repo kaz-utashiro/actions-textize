@@ -22,7 +22,7 @@ runs:
         : ${root:=.}
         #
         # create/checkout target branch and merge main
-        git checkout -B $BRANCH
+        git checkout -B "${{ inputs.branch }}"
         git merge -s ort -X theirs $GITHUB_REF_NAME
         #
         textize=$GITHUB_ACTION_PATH/textize.sh
@@ -43,7 +43,6 @@ runs:
         git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com>"
         git config --global user.name "$GITHUB_ACTOR"
         TOKEN="${{ inputs.token }}"
-        BRANCH="${{ inputs.branch }}"
         repo="https://${GITHUB_ACTOR}:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         git add -u
         git commit -m "update $update" && git push -f $repo
