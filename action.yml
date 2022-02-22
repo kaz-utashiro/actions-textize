@@ -14,17 +14,17 @@ runs:
         perl: App::optex::textconv
         apt:  poppler-utils
 
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ inputs.branch }}
+        path: __textize__
+
     - id: textize
       shell: bash
       run: |
         : textize
         root=${{ inputs.root }}
         : ${root:=.}
-        #
-        # create/checkout target branch and merge main
-        git checkout -b "${{ inputs.branch }}"
-        git merge -s ort -X theirs $GITHUB_REF_NAME
-        #
         textize=$GITHUB_ACTION_PATH/textize.sh
         files=$(git ls-files $root)
         echo Processing $files ...
@@ -33,12 +33,16 @@ runs:
         cat << END
         ::set-output name=update::$update
         END
+        #
+        (cd __textize__; git merge -s ort -X theirs $GITHUB_REF_NAME)
+        tar -cf - $update | tar -C __textize__ -xfv -
 
     - id: export
       shell: bash
       run: |
         : export
         set -x; printenv
+        cd __textize__
         update="${{ steps.textize.outputs.update }}"
         git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com>"
         git config --global user.name "$GITHUB_ACTOR"
