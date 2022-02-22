@@ -30,8 +30,12 @@ runs:
 
     - id: export
       shell: bash
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         : export
-        echo ${{ steps.textize.outputs.update }}
+        update="${{ steps.textize.outputs.update }}"
         git checkout -b textize
-        git status
+        git add $update
+        git commit -m "update $update"
+        git push
