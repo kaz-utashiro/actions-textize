@@ -33,7 +33,11 @@ runs:
       run: |
         : export
         update="${{ steps.textize.outputs.update }}"
-        git checkout -b textize
+        git config --global user.email "you@example.com"
+        git config --global user.name "Your Name"
+        git checkout -B textize
+        remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_ACTION_REPOSITORY}.git"
+        echo $remote_repo
         git add $update
         git commit -m "update $update"
-        git push
+        git push $remote_repo
